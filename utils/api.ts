@@ -1,7 +1,6 @@
 //- utils/api.ts
 
-const ApiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://equran.id/api';
-const ApiVersion = process.env.NEXT_PUBLIC_API_VERSION || 'v2';
+import { QuranConfig } from "./config";
 
 export const getApiUrl = (endpoint: string) => {
   // Ensure the endpoint starts with a slash
@@ -9,10 +8,13 @@ export const getApiUrl = (endpoint: string) => {
     endpoint = `/${endpoint}`;
   }
   
+  const apiUrl = QuranConfig.apiUrl;
+  const apiVersion = QuranConfig.apiVersion;
+  
   // If ApiUrl already ends with a slash, just append the version and endpoint
-  if (!ApiUrl.endsWith('/')) {
-    return `${ApiUrl}/${ApiVersion}${endpoint}`;
+  if (!apiUrl.endsWith('/')) {
+    return `${apiUrl}/${apiVersion}${endpoint}`;
   }
   
-  return `${ApiUrl}${ApiVersion}${endpoint}`;
+  return `${apiUrl}${apiVersion}${endpoint}`;
 };

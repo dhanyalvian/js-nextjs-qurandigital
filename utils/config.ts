@@ -1,0 +1,8 @@
+//- utils/config.ts
+
+export const QuranConfig = {
+  apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://equran.id/api',
+  apiVersion: process.env.NEXT_PUBLIC_API_VERSION || 'v2',
+  metadataTitle: process.env.NEXT_PUBLIC_METADATA_TITLE || "Qur'an Database",
+  metadataDescription: process.env.NEXT_PUBLIC_METADATA_DESCRIPTION || "Database Al-Qur'an dengan terjemahan dan tafsir Indonesia.",
+};

@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #fafafa;
   --foreground: #171717;
+
+  --quran-nav: #ffffff;
+  --quran-footer: #fdfdfd;
+  --quran-panel: #ffffff;
+  --quran-border-primary: #ebebeb;
+  --quran-border-secondary: #cfcfcf;
+  --quran-title: #3c3c43;
+  --quran-subtitle: #67676c;
+  --quran-info: var(--color-gray-400);
 }
 
 @theme inline {
@@ -10,17 +19,40 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-quran-nav: var(--quran-nav);
+  --color-quran-footer: var(--quran-footer);
+  --color-quran-panel: var(--quran-panel);
+  --color-quran-border-primary: var(--quran-border-primary);
+  --color-quran-border-secondary: var(--quran-border-secondary);
+  --color-quran-title: var(--quran-title);
+  --color-quran-subtitle: var(--quran-subtitle);
+  --color-quran-info: var(--quran-info);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+
+    --quran-nav: #202127;
+    --quran-footer: #0a0a0a;
+    --quran-panel: #202127;
+    --quran-border-primary: #111111;
+    --quran-title: #ffffff;
+    --quran-subtitle: #98989f;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Roboto", "Open Sans", sans-serif;
+}
+
+.font-arabic {
+  font-family: "Noto Naskh Arabic", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
 }

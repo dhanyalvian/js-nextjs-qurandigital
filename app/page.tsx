@@ -4,6 +4,7 @@
 
 import { Surat } from "@/types/quran";
 import { getApiUrl } from "@/utils/api";
+import { QuranConfig } from "@/utils/config";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
@@ -42,33 +43,33 @@ const HomePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
+    <div className="min-h-screen">
       <main className="container mx-auto p-4 py-8">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">{"Al-Qur'an"}</h1>
-          <p className="text-slate-400">Daftar Surat {"Al-Qur'an"} dengan Terjemahan Indonesia</p>
+          <h1 className="text-4xl font-bold mb-2 text-quran-title">{QuranConfig.metadataTitle}</h1>
+          <p className="text-xl text-quran-subtitle">{QuranConfig.metadataDescription}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {data?.map((surat: Surat) => (
             <Link
               key={surat.nomor}
-              href={`/surah/${surat.nomor}`}
-              className="block p-6 bg-slate-800 rounded-lg hover:bg-slate-700 transition-colors duration-200 border border-slate-700 hover:border-slate-600"
+              href={`/surat/${surat.nomor}`}
+              className="group block p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary hover:border-quran-border-secondary shadow-sm hover:shadow-md"
             >
               <div className="flex justify-between items-start">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 bg-slate-700 rounded-full text-sm font-bold">
+                <div className="flex items-start gap-4">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-full text-sm font-bold bg-quran-border-primary border border-quran-border-primary group-hover:border-quran-border-secondary">
                     {surat.nomor}
                   </div>
-                  <div>
-                    <h2 className="font-bold text-lg">{surat.namaLatin}</h2>
-                    <p className="text-sm text-slate-400">{surat.arti}</p>
-                    <p className="text-xs text-slate-500 mt-1">{surat.jumlahAyat} ayat</p>
+                  <div className="items-start">
+                    <h2 className="font-semibold text-lg text-quran-title">{surat.namaLatin}</h2>
+                    <p className="text-xs text-quran-subtitle font-medium">{surat.arti}</p>
+                    <p className="text-xs text-quran-info mt-0.5">{surat.jumlahAyat} ayat</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-mono text-xl text-slate-300">{surat.nama}</p>
+                  <p className="font-arabic font-mono text-3xl text-quran-title">{surat.nama}</p>
                 </div>
               </div>
             </Link>
