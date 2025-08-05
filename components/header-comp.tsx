@@ -8,7 +8,7 @@ const Header = () => {
       <nav className="
         fixed top-0
         px-5 py-3 z-50
-        w-full flex
+        w-full flex shadow-xs
         justify-between
         bg-quran-nav border-b border-b-quran-border-primary"
       >

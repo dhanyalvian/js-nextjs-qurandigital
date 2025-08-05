@@ -47,13 +47,12 @@ interface SurahDetail {
 
 export default function SurahDetailPage() {
   const params = useParams();
-  console.log('Params:', params);
   const nomorSurah = params.no_surat as string;
   const [currentlyPlaying, setCurrentlyPlaying] = useState<number | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const { data, isLoading, isError } = useQuery<SurahDetail>({
-    queryKey: ['surah-detail', nomorSurah],
+    queryKey: ['surat-detail', nomorSurah],
     queryFn: async () => {
       const response = await axios.get(`https://equran.id/api/v2/surat/${nomorSurah}`);
       return response.data.data;
@@ -97,7 +96,7 @@ export default function SurahDetailPage() {
   };
 
   if (isLoading) {
-    return (<LoaderComp />);
+    return <LoaderComp />;
   }
 
   if (isError || !data) {
@@ -114,17 +113,19 @@ export default function SurahDetailPage() {
     );
   }
 
+  const numAudioFull = 999;
+
   return (
     <>
       <div className="mb-8">
-        <Link href="/" className="inline-flex items-center mb-4 transition-colors text-quran-subtitle hover:text-quran-title">
-          <ChevronLeft size={24} />
-          <p className='ml-1 items-center'>
-            Kembali ke Daftar Surat
+        <Link href="/" className="inline-flex items-center mb-4 transition-colors text-quran-info hover:text-quran-title">
+          <ChevronLeft size={18} />
+          <p className='ml-1 items-center text-sm'>
+            kembali ke list surat
           </p>
         </Link>
 
-        <div className="sticky top-0 text-center bg-quran-panel rounded-lg p-6 border border-quran-panel">
+        <div className="sticky top-0 text-center bg-quran-nav rounded-lg p-6 border border-quran-border-primary shadow-xs">
           <ul className="flex justify-center font-bold text-quran-title divider-x-dot">
             <li className='text-3xl'>{data.namaLatin}</li>
             <li className="text-4xl font-arabic" dir="rtl">{data.nama}</li>
@@ -137,6 +138,41 @@ export default function SurahDetailPage() {
             <li>{data.tempatTurun}</li>
             <li>{data.jumlahAyat} ayat</li>
           </ul>
+
+          <div className='mt-3'>
+            <button className={`
+              group
+              bg-quran-border-primary
+              border
+              ${currentlyPlaying === numAudioFull
+                ? 'border-quran-border-secondary'
+                : 'border-quran-border-primary'}
+              hover:border-quran-border-secondary
+              text-sm
+              text-quran-subtitle
+              font-semibold
+              py-1
+              px-2
+              rounded-2xl
+              inline-flex
+              items-center
+              cursor-pointer`}
+              onClick={() => playAudio(data.audioFull['05'], numAudioFull)}
+              title={currentlyPlaying === numAudioFull ? 'Berhenti' : 'Putar Surat'}
+            >
+              {currentlyPlaying === numAudioFull ? (
+                <>
+                  <Icon type='stop' size={16} isFill={true} isActive={true} />
+                  <span className='ml-2 mr-1'>Stop Surat</span>
+                </>
+              ) : (
+                <>
+                  <Icon type='play' size={16} isFill={true} isActive={true} />
+                  <span className='ml-2 mr-1'>Putar Surat</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -150,7 +186,12 @@ export default function SurahDetailPage() {
             <div className="flex items-center justify-between mb-4">
               <NumberStickerRounded number={data.nomor + ':' + ayat.nomorAyat} />
 
-              <ul className='flex items-center gap-3'>
+              <ul className='flex items-center gap-5'>
+                <li>
+                  <button className='transition-colors cursor-pointer' title='Copy text'>
+                    <Icon type='copy' />
+                  </button>
+                </li>
                 <li>
                   <button className='transition-colors cursor-pointer' title='Tafsir'>
                     <Icon type='tafsir' />
@@ -158,20 +199,25 @@ export default function SurahDetailPage() {
                 </li>
                 <li>
                   <button
-                    onClick={() => playAudio(ayat.audio['01'], ayat.nomorAyat)}
+                    onClick={() => playAudio(ayat.audio['05'], ayat.nomorAyat)}
                     className='transition-colors cursor-pointer'
-                    title={currentlyPlaying === ayat.nomorAyat ? 'Berhenti' : 'Putar'}
+                    title={currentlyPlaying === ayat.nomorAyat ? 'Stop' : 'Putar ayat ' + ayat.nomorAyat}
                   >
                     {currentlyPlaying === ayat.nomorAyat ? (
-                      <Icon type='stop' isActive={true} />
+                      <Icon type='stop' isFill={true} isActive={true} />
                     ) : (
-                      <Icon type='play' />
+                      <Icon type='play' isFill={true} />
                     )}
                   </button>
                 </li>
                 <li>
-                  <button className='transition-colors cursor-pointer' title='Bookmark'>
-                    <Icon type='bookmark' />
+                  <button className='transition-colors cursor-pointer' title='Tandai'>
+                    <Icon type='bookmark-active' />
+                  </button>
+                </li>
+                <li>
+                  <button className='transition-colors cursor-pointer' title='Share'>
+                    <Icon type='share' />
                   </button>
                 </li>
               </ul>

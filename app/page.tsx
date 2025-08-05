@@ -4,7 +4,6 @@
 
 import { Surat } from "@/types/quran";
 import { getApiUrl } from "@/utils/api";
-import { QuranConfig } from "@/utils/config";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
@@ -14,7 +13,7 @@ import { NumberStickerCircle } from "@/utils/comp";
 
 const HomePage = () => {
   const { data, isLoading, isError } = useQuery<Surat[]>({
-    queryKey: ['list-surat'],
+    queryKey: ['surat-list'],
     queryFn: async () => {
       const url = getApiUrl('/surat');
       const response = await axios.get(url);

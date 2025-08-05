@@ -12,6 +12,9 @@
   --quran-title: #3c3c43;
   --quran-subtitle: #67676c;
   --quran-info: var(--color-gray-400);
+  
+  --quran-active: #171717;
+  --quran-inactive: #666666;
 }
 
 @theme inline {
@@ -29,6 +32,9 @@
   --color-quran-title: var(--quran-title);
   --color-quran-subtitle: var(--quran-subtitle);
   --color-quran-info: var(--quran-info);
+  
+  --color-quran-active: var(--quran-active); 
+  --color-quran-inactive: var(--quran-inactive); 
 }
 
 @media (prefers-color-scheme: dark) {
@@ -51,12 +57,19 @@ body {
   font-family: "Roboto", "Open Sans", sans-serif;
 }
 
-.icon-wrapper {
-  color: var(--color-quran-subtitle);
+.icon-wrapper,
+.icon-wrapper-fill {
+  color: var(--color-quran-border-secondary);
   fill: none;
 }
-.icon-wrapper:hover,
-.icon-wrapper-fill {
+.icon-wrapper-active,
+.icon-wrapper:hover {
+  color: var(--color-quran-title);
+}
+
+.icon-wrapper-fill-active,
+.icon-wrapper-fill:hover {
+  color: var(--color-quran-subtitle);
   fill: var(--color-quran-subtitle);
 }
 

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Roboto, Roboto_Mono, Noto_Naskh_Arabic, Noto_Sans_Arabic } from "next/font/google";
+import { Roboto, Roboto_Mono, Noto_Naskh_Arabic } from "next/font/google";
 import "./globals.css";
 import Providers from "@/providers";
 import { QuranConfig } from "@/utils/config";
 import Header from "@/components/header-comp";
 import Footer from "@/components/footer-comp";
+import BackToTopButton from "@/components/back-to-top-comp";
 
 const fontRoboto = Roboto({
   variable: "--font-roboto",
@@ -47,6 +48,7 @@ export default function RootLayout({
           </Providers>
         </div>
         
+        <BackToTopButton />
         <Footer />
       </body>
     </html>
