@@ -1,8 +1,7 @@
 //- components/icon.tsx
 
 import {
-  Bookmark,
-  BookmarkCheck,
+  BookmarkPlus,
   BookOpenText,
   Copy,
   Play,
@@ -35,9 +34,7 @@ export const Icon = ({ type, size = 18, isActive = false, isFill = false }: { ty
     case 'tafsir':
       return <BookOpenText size={size} className={iconClass} />;
     case 'bookmark':
-      return <Bookmark size={size} className={iconClass} />;
-    case 'bookmark-active':
-      return <BookmarkCheck size={size} className={iconClass} />;
+      return <BookmarkPlus size={size} className={iconClass} />;
     case 'share':
       return <Share2 size={size} className={iconClass} />;
     default:

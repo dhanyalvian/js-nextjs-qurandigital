@@ -46,6 +46,7 @@
     --quran-footer: #0a0a0a;
     --quran-panel: #202127;
     --quran-border-primary: #111111;
+    --quran-border-secondary: #444444;
     --quran-title: #ffffff;
     --quran-subtitle: #98989f;
   }
@@ -78,4 +79,11 @@ body {
   margin: 0 0.6em;
   color: var(--mdb-subtitle, #999);
   font-weight: bold;
+}
+
+html {
+  scroll-behavior: smooth; /* enables smooth scrolling */
+}
+[id] {
+  scroll-margin-top: 76px; /* height of your header */
 }
