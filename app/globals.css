@@ -5,7 +5,7 @@
   --foreground: #171717;
 
   --quran-nav: #ffffff;
-  --quran-footer: #fdfdfd;
+  --quran-footer: var(--background);
   --quran-panel: #ffffff;
   --quran-border-primary: #ebebeb;
   --quran-border-secondary: #cfcfcf;
@@ -43,7 +43,7 @@
     --foreground: #ededed;
 
     --quran-nav: #202127;
-    --quran-footer: #0a0a0a;
+    --quran-footer: var(--background);
     --quran-panel: #202127;
     --quran-border-primary: #111111;
     --quran-border-secondary: #444444;

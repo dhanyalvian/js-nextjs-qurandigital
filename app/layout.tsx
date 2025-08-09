@@ -41,7 +41,7 @@ export default function RootLayout({
         <div className="mt-4 pt-10 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <Providers>
             <div className="">
-              <main className="container mx-auto p-4 py-8">
+              <main className="mx-auto max-w-7xl p-4 py-8">
                 {children}
               </main>
             </div>

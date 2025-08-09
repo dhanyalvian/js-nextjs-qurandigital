@@ -1,6 +1,6 @@
 //- components/error-comp.tsx
 
-import { ChevronLeft, CircleAlert } from "lucide-react";
+import { CircleAlert } from "lucide-react";
 import Link from "next/link";
 
 const ErrorComp = () => {

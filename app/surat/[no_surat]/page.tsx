@@ -11,7 +11,7 @@ import LoaderComp from '@/components/loader-comp';
 import { NumberStickerRounded } from '@/utils/comp';
 import { Icon } from '@/components/icon';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { SuratDetail } from '@/types/quran';
+import { Ayat, Surat, SuratDetail } from '@/types/quran';
 import { ApiUrl, QuranConfig } from '@/utils/config';
 import ErrorComp from '@/components/error-comp';
 import { useBookmarks } from '@/hooks/bookmark';
@@ -23,6 +23,50 @@ export default function SuratDetailPage() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<number | null>(null);
   const { toggleBookmark, isBookmark } = useBookmarks();
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  const [isCopied, setIsCopied] = useState<boolean[]>([]);
+  const copyToClipboard = (surat: Surat, ayat: Ayat) => {
+    const copyIndex = ayat.nomorAyat;
+    let copyText = `${surat.namaLatin} (${surat.nomor}:${ayat.nomorAyat}) | ${surat.nama}\n\n`;
+    copyText += `${ayat.teksArab}\n\n`;
+    copyText += `${ayat.teksIndonesia}`;
+  
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(copyText);
+      } else {
+        const tempTextArea = document.createElement('textarea');
+        tempTextArea.value = copyText;
+        tempTextArea.style.position = 'fixed';
+        tempTextArea.style.left = '-9999px';
+        tempTextArea.style.top = '0';
+        document.body.appendChild(tempTextArea);
+        tempTextArea.focus();
+        tempTextArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextArea);
+      }
+
+      setIsCopied(prevIsCopied => {
+        const newIsCopied = [...prevIsCopied];
+        newIsCopied[copyIndex] = true;
+        return newIsCopied;
+      });
+
+      setTimeout(() => setIsCopied(prevIsCopied => {
+        const newIsCopied = [...prevIsCopied];
+        newIsCopied[copyIndex] = false;
+        return newIsCopied;
+      }), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+      setIsCopied(prevIsCopied => {
+        const newIsCopied = [...prevIsCopied];
+        newIsCopied[copyIndex] = false;
+        return newIsCopied;
+      });
+    }
+  };
 
   const { data, isLoading, isError } = useQuery<SuratDetail>({
     queryKey: ['surat-detail', noSurat],
@@ -31,14 +75,14 @@ export default function SuratDetailPage() {
       return response.data.data;
     },
   });
-  
+
   useEffect(() => {
     if (!isLoading && data) {
       const hash = window.location.hash;
-      
+
       if (hash) {
-        const element = document.querySelector('[id="'+ hash.replace('#', '') + '"]');
-        
+        const element = document.querySelector('[id="' + hash.replace('#', '') + '"]');
+
         if (element) {
           element.scrollIntoView({ behavior: "smooth", block: "start" });
         }
@@ -153,8 +197,17 @@ export default function SuratDetailPage() {
 
               <ul className='flex items-center gap-5'>
                 <li>
-                  <button className='transition-colors cursor-pointer' title='Copy text'>
-                    <Icon type='copy' />
+                  <button
+                    className='transition-colors cursor-pointer'
+                    title='Copy text'
+                    onClick={() => copyToClipboard(data, ayat)}
+                    disabled={isCopied[ayat.nomorAyat]}
+                  >
+                    {isCopied[ayat.nomorAyat] ? (
+                      <Icon type='check' isActive={true} />
+                    ) : (
+                      <Icon type='copy' />
+                    )}
                   </button>
                 </li>
                 <li>

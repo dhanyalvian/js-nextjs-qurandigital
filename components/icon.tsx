@@ -3,8 +3,10 @@
 import {
   Bookmark,
   BookOpenText,
+  Check,
   Copy,
   Play,
+  Search,
   Share2,
   Square,
   Trash2,
@@ -28,6 +30,8 @@ export const Icon = ({ type, size = 18, isActive = false, isFill = false }: { ty
   switch (type) {
     case 'copy':
       return <Copy size={size} className={iconClass} />;
+    case 'check':
+      return <Check size={size} className={iconClass} />;
     case 'play':
       return <Play size={size} className={iconClass} />;
     case 'stop':
@@ -40,6 +44,8 @@ export const Icon = ({ type, size = 18, isActive = false, isFill = false }: { ty
       return <Share2 size={size} className={iconClass} />;
     case 'remove':
       return <Trash2 size={size} className={iconClass} />
+    case 'search':
+      return <Search size={size} className={iconClass} />
     default:
       return <Square size={size} className={iconClass} />;
   }
