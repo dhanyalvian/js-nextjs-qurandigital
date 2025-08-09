@@ -1,5 +1,6 @@
 //- components/header-comp.tsx
 
+import Link from "next/link";
 import { QuranConfig } from "@/utils/config";
 
 const Header = () => {
@@ -12,10 +13,10 @@ const Header = () => {
         justify-between
         bg-quran-nav border-b border-b-quran-border-primary"
       >
-        <div className=" mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-          <div className="flex flex-1 text-xl font-bold text-quran-title">
+        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <Link href="/" className="flex flex-1 text-xl font-bold text-quran-title">
             {QuranConfig.metadataTitle}
-          </div>
+          </Link>
         </div>
       </nav>
     </header>

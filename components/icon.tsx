@@ -1,12 +1,13 @@
 //- components/icon.tsx
 
 import {
-  BookmarkPlus,
+  Bookmark,
   BookOpenText,
   Copy,
   Play,
   Share2,
   Square,
+  Trash2,
 } from "lucide-react";
 
 export const Icon = ({ type, size = 18, isActive = false, isFill = false }: { type: string, size?: number, isActive?: boolean, isFill?: boolean }) => {
@@ -34,9 +35,11 @@ export const Icon = ({ type, size = 18, isActive = false, isFill = false }: { ty
     case 'tafsir':
       return <BookOpenText size={size} className={iconClass} />;
     case 'bookmark':
-      return <BookmarkPlus size={size} className={iconClass} />;
+      return <Bookmark size={size} className={iconClass} />;
     case 'share':
       return <Share2 size={size} className={iconClass} />;
+    case 'remove':
+      return <Trash2 size={size} className={iconClass} />
     default:
       return <Square size={size} className={iconClass} />;
   }

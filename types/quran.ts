@@ -11,6 +11,20 @@ export interface Surat {
   audioFull: { [key: string]: string };
 };
 
+export interface SuratDetail extends Surat {
+  ayat: Ayat[];
+  suratSebelumnya?: {
+    nomor: number;
+    nama: string;
+    namaLatin: string;
+  };
+  suratSelanjutnya?: {
+    nomor: number;
+    nama: string;
+    namaLatin: string;
+  };
+}
+
 export interface Ayat {
   nomorAyat: number;
   teksArab: string;
@@ -23,3 +37,11 @@ export interface Tafsir {
   ayat: number;
   teks: string;
 };
+
+export interface Bookmark {
+  noSurat: number;
+  namaSurat: string;
+  namaSuratLatin: string;
+  noAyat: number;
+  teksArab: string;
+}
