@@ -133,10 +133,10 @@ export default function SuratDetailPage() {
 
   return (
     <>
-      <div className="mb-8">
+      <div className="mb-4">
         <BackToSurahComp />
 
-        <div className="text-center bg-quran-nav rounded-lg p-6 border border-quran-border-primary shadow-xs">
+        <div className="text-center bg-quran-nav rounded-lg p-4 border border-quran-border-primary shadow-xs">
           <ul className="flex justify-center font-bold text-quran-title divider-x-dot">
             <li className='text-3xl'>{data.namaLatin}</li>
             <li className="text-4xl font-arabic" dir="rtl">{data.nama}</li>
@@ -148,7 +148,7 @@ export default function SuratDetailPage() {
             <li>{data.jumlahAyat} ayat</li>
           </ul>
 
-          <div className='mt-3'>
+          <div className="mt-2">
             <button className={`
               group
               bg-quran-border-primary
@@ -185,7 +185,7 @@ export default function SuratDetailPage() {
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-4">
         {data.ayat.map((ayat) => (
           <div
             id={`${ayat.nomorAyat}`}
@@ -267,7 +267,7 @@ export default function SuratDetailPage() {
               </p>
             </div>
 
-            <div className="mb-4">
+            <div className="">
               <p className="text-md text-quran-title leading-relaxed">
                 {ayat.teksIndonesia}
               </p>
@@ -275,7 +275,7 @@ export default function SuratDetailPage() {
           </div>
         ))}
 
-        <div className="grid grid-cols-2 gap-7 mx-auto">
+        <div className="grid grid-cols-2 gap-4 mx-auto">
           {data.suratSebelumnya && data.suratSebelumnya.nomor ? (
             <Link href={`/surat/${data.suratSebelumnya.nomor}`} className="group p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary hover:border-quran-border-secondary shadow-sm hover:shadow-md">
               <div className='flex justify-start items-center'>

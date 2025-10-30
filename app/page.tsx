@@ -1,29 +1,29 @@
 //- app/page.tsx
 
-'use client';
+'use client'
 
-import { Surat } from "@/types/quran";
-import { getApiUrl } from "@/utils/api";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import Link from "next/link";
-import LoaderComp from "@/components/loader-comp";
-import { NumberStickerCircle } from "@/utils/comp";
+import { Surat } from "@/types/quran"
+import { getApiUrl } from "@/utils/api"
+import { useQuery } from "@tanstack/react-query"
+import axios from "axios"
+import Link from "next/link"
+import LoaderComp from "@/components/loader-comp"
+import { NumberStickerCircle } from "@/utils/comp"
 
 
 const HomePage = () => {
   const { data, isLoading, isError } = useQuery<Surat[]>({
     queryKey: ['surat-list'],
     queryFn: async () => {
-      const url = getApiUrl('/surat');
-      const response = await axios.get(url);
+      const url = getApiUrl('/surat')
+      const response = await axios.get(url)
 
-      return response.data.data;
+      return response.data.data
     },
-  });
+  })
 
   if (isLoading) {
-    return (<LoaderComp />);
+    return (<LoaderComp />)
   }
 
   if (isError) {
@@ -34,7 +34,7 @@ const HomePage = () => {
           <p className="text-slate-400 mt-2">Silakan coba lagi nanti.</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -44,7 +44,7 @@ const HomePage = () => {
         <p className="text-xl text-quran-subtitle">{QuranConfig.metadataDescription}</p>
       </div> */}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto">
         {data?.map((surat: Surat) => (
           <Link
             key={surat.nomor}
@@ -69,7 +69,7 @@ const HomePage = () => {
         ))}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage

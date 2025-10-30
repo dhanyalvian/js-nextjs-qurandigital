@@ -27,7 +27,7 @@ const BookmarkPage = () => {
 
     if (row.noSurat !== lastNoSurat) {
       headerTag = (
-        <div className={`block mb-4 ${lastNoSurat == 0 ? '' : 'border-t border-t-quran-border-primary border-dashed pt-10'}`}>
+        <div className={`block mb-4 ${lastNoSurat == 0 ? '' : 'border-t border-t-quran-border-primary border-dashed pt-4'}`}>
           <ul className="flex justify-start font-bold text-quran-title divider-x-dot mb-2">
             <li className="text-xl">{row.namaSuratLatin}</li>
             <li className="text-2xl font-arabic" dir="rtl">
@@ -73,10 +73,10 @@ const BookmarkPage = () => {
 
   return (
     <>
-      <div className="mb-8">
+      <div className="mb-4">
         <BackToSurahComp />
 
-        <div className="text-center bg-quran-nav rounded-lg p-6 border border-quran-border-primary shadow-xs">
+        <div className="text-center bg-quran-nav rounded-lg p-4 border border-quran-border-primary shadow-xs">
           <ul className="flex justify-center font-bold text-quran-title divider-x-dot">
             <li className='text-3xl'>Ayat yang ditandai</li>
           </ul>
@@ -86,8 +86,8 @@ const BookmarkPage = () => {
         </div>
       </div>
 
-      <div className="space-y-6">
-        <div className="bg-quran-nav rounded-lg p-6 border border-quran-border-primary shadow-xs">
+      <div className="space-y-4">
+        <div className="bg-quran-nav rounded-lg border border-quran-border-primary shadow-xs">
           {resultData.length > 0 ? (
             <>
               {resultData}
