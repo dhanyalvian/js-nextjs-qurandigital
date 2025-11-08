@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { QuranConfig } from "@/utils/config";
 import { Icon } from "./icon";
+import { BookOpenText } from "lucide-react";
 
 const Header = () => {
   return (
@@ -14,9 +15,12 @@ const Header = () => {
         bg-quran-nav border-b border-b-quran-border-primary"
       >
         <div className="layout-width py-3 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-quran-title">
-            {QuranConfig.metadataTitle}
-          </Link>
+          <div className="flex flex-1">
+            <Link href="/" className="flex justify-start items-end gap-2">
+              <BookOpenText size={26} />
+              <div className="text-2xl font-bold text-gray-900">{QuranConfig.metadataTitle}</div>
+            </Link>
+          </div>
 
           <ul className="flex items-center space-x-4 gap-2">
             <li>

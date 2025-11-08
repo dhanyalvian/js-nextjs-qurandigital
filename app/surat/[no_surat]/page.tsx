@@ -156,7 +156,6 @@ export default function SuratDetailPage() {
               ${currentlyPlaying === numAudioFull
                 ? 'border-quran-border-secondary animate-pulse'
                 : 'border-quran-border-primary'}
-              hover:border-quran-border-secondary
               text-sm
               text-quran-subtitle
               font-semibold
@@ -190,7 +189,7 @@ export default function SuratDetailPage() {
           <div
             id={`${ayat.nomorAyat}`}
             key={ayat.nomorAyat}
-            className="group p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary hover:border-quran-border-secondary shadow-sm hover:shadow-md"
+            className="group p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs"
           >
             <div className="flex items-center justify-between mb-4">
               <NumberStickerRounded number={data.nomor + ':' + ayat.nomorAyat} />
@@ -277,7 +276,7 @@ export default function SuratDetailPage() {
 
         <div className="grid grid-cols-2 gap-4 mx-auto">
           {data.suratSebelumnya && data.suratSebelumnya.nomor ? (
-            <Link href={`/surat/${data.suratSebelumnya.nomor}`} className="group p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary hover:border-quran-border-secondary shadow-sm hover:shadow-md">
+            <Link href={`/surat/${data.suratSebelumnya.nomor}`} className="group p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs">
               <div className='flex justify-start items-center'>
                 <ChevronLeft className='mr-3' size={24} />
                 <div>
@@ -291,7 +290,7 @@ export default function SuratDetailPage() {
           )}
 
           {data.suratSelanjutnya && data.suratSelanjutnya.nomor ? (
-            <Link href={`/surat/${data.suratSelanjutnya.nomor}`} className="group p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary hover:border-quran-border-secondary shadow-sm hover:shadow-md text-right items-end">
+            <Link href={`/surat/${data.suratSelanjutnya.nomor}`} className="group p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs text-right items-end">
               <div className='flex justify-end items-center'>
                 <div>
                   <div className='font-arabic text-2xl'>{data.suratSelanjutnya.nama}</div>
