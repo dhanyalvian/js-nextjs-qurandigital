@@ -136,7 +136,7 @@ export default function SuratDetailPage() {
       <div className="mb-4">
         <BackToSurahComp />
 
-        <div className="text-center bg-quran-nav rounded-lg p-4 border border-quran-border-primary shadow-xs">
+        <div className="text-center bg-quran-nav rounded-2xl p-4 border border-quran-border-primary shadow-xs">
           <ul className="flex justify-center font-bold text-quran-title divider-x-dot">
             <li className='text-3xl'>{data.namaLatin}</li>
             <li className="text-4xl font-arabic" dir="rtl">{data.nama}</li>
@@ -189,7 +189,7 @@ export default function SuratDetailPage() {
           <div
             id={`${ayat.nomorAyat}`}
             key={ayat.nomorAyat}
-            className="group p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs"
+            className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs"
           >
             <div className="flex items-center justify-between mb-4">
               <NumberStickerRounded number={data.nomor + ':' + ayat.nomorAyat} />
@@ -276,7 +276,7 @@ export default function SuratDetailPage() {
 
         <div className="grid grid-cols-2 gap-4 mx-auto">
           {data.suratSebelumnya && data.suratSebelumnya.nomor ? (
-            <Link href={`/surat/${data.suratSebelumnya.nomor}`} className="group p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs">
+            <Link href={`/surat/${data.suratSebelumnya.nomor}`} className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs">
               <div className='flex justify-start items-center'>
                 <ChevronLeft className='mr-3' size={24} />
                 <div>
@@ -290,7 +290,7 @@ export default function SuratDetailPage() {
           )}
 
           {data.suratSelanjutnya && data.suratSelanjutnya.nomor ? (
-            <Link href={`/surat/${data.suratSelanjutnya.nomor}`} className="group p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs text-right items-end">
+            <Link href={`/surat/${data.suratSelanjutnya.nomor}`} className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs text-right items-end">
               <div className='flex justify-end items-center'>
                 <div>
                   <div className='font-arabic text-2xl'>{data.suratSelanjutnya.nama}</div>

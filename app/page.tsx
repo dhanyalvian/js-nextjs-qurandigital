@@ -49,7 +49,7 @@ const HomePage = () => {
           <Link
             key={surat.nomor}
             href={`/surat/${surat.nomor}`}
-            className="group p-4 rounded-xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs"
+            className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs"
           >
             <div className="flex justify-between items-start">
               <div className="flex items-start gap-4">

@@ -76,7 +76,7 @@ const BookmarkPage = () => {
       <div className="mb-4">
         <BackToSurahComp />
 
-        <div className="text-center bg-quran-nav rounded-lg p-4 border border-quran-border-primary shadow-xs">
+        <div className="text-center bg-quran-nav rounded-2xl p-4 border border-quran-border-primary shadow-xs">
           <ul className="flex justify-center font-bold text-quran-title divider-x-dot">
             <li className='text-3xl'>Ayat yang ditandai</li>
           </ul>
@@ -87,7 +87,7 @@ const BookmarkPage = () => {
       </div>
 
       <div className="space-y-4">
-        <div className="bg-quran-nav rounded-lg border border-quran-border-primary shadow-xs">
+        <div className="bg-quran-nav rounded-2xl border border-quran-border-primary shadow-xs">
           {resultData.length > 0 ? (
             <>
               {resultData}
