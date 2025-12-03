@@ -4,10 +4,12 @@
 
 import Link from "next/link"
 import { QuranConfig } from "@/utils/config"
-import { Bookmark, BookOpenText, ChevronLeft } from "lucide-react"
+import { Bookmark, BookOpenText, ChevronLeft, Search } from "lucide-react"
 import { ButtonGroup } from "./ui/button-group"
 import { Button } from "./ui/button"
 import { usePathname } from "next/navigation"
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip"
+import { Kbd, KbdGroup } from "./ui/kbd"
 
 const Header = () => {
   const pathname = usePathname()
@@ -24,7 +26,7 @@ const Header = () => {
       >
         <div className="layout-width py-3 flex items-center justify-between">
           <div className="flex flex-1">
-            <Link href="/" className="flex justify-start items-end gap-3">
+            <Link href="/" className="flex justify-start items-end gap-2">
               <BookOpenText size={26} />
               <div className="text-xl font-bold text-gray-900">{QuranConfig.metadataTitle}</div>
             </Link>
@@ -32,19 +34,52 @@ const Header = () => {
 
           <ButtonGroup>
             {!homeActive && (
-              <Button variant="outline" size="sm" asChild className="rounded-full">
-                <Link href="/" title="Bookmark">
-                  <ChevronLeft />
-                  Back to Surat
-                </Link>
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" size="sm" asChild className="rounded-xl">
+                    <Link href="/">
+                      <ChevronLeft />
+                      <span className="hidden md:block lg:block">Back</span>
+                    </Link>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Back
+                </TooltipContent>
+              </Tooltip>
             )}
-            <Button variant="outline" size="sm" asChild className="rounded-full">
-              <Link href="/bookmarks" title="Bookmark">
-                <Bookmark className={`${bookmarkActive && "icon-wrapper-fill-active"}`}/>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="outline" size="sm" className="rounded-xl cursor-pointer">
+                  <Search />
+                  <span className="hidden md:block lg:block">Search</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="flex items-center gap-2">
+                  Search
+                  <KbdGroup>
+                    <Kbd>⌘</Kbd>
+                    <Kbd>K</Kbd>
+                  </KbdGroup>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="outline" size="sm" asChild className="rounded-xl">
+                  <Link href="/bookmarks" title="Bookmark">
+                    <Bookmark className={`${bookmarkActive && "icon-wrapper-fill-active"}`} />
+                    <span className="hidden md:block lg:block">Bookmark</span>
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
                 Bookmark
-              </Link>
-            </Button>
+              </TooltipContent>
+            </Tooltip>
           </ButtonGroup>
         </div>
       </nav>
