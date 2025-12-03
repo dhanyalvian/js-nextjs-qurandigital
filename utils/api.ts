@@ -1,20 +1,19 @@
 //- utils/api.ts
 
-import { QuranConfig } from "./config";
+import { ConfigApiUrl } from "./config"
 
-export const getApiUrl = (endpoint: string) => {
+export const GetApiUrl = (endpoint: string) => {
+  let apiUrl = ConfigApiUrl()
+  
+  // If ApiUrl already ends with a slash, remove it
+  if (apiUrl.endsWith("/")) {
+    apiUrl = apiUrl.slice(0, -1)
+  }
+  
   // Ensure the endpoint starts with a slash
-  if (!endpoint.startsWith('/')) {
-    endpoint = `/${endpoint}`;
+  if (!endpoint.startsWith("/")) {
+    endpoint = `/${endpoint}`
   }
   
-  const apiUrl = QuranConfig.apiUrl;
-  const apiVersion = QuranConfig.apiVersion;
-  
-  // If ApiUrl already ends with a slash, just append the version and endpoint
-  if (!apiUrl.endsWith('/')) {
-    return `${apiUrl}/${apiVersion}${endpoint}`;
-  }
-  
-  return `${apiUrl}${apiVersion}${endpoint}`;
-};
+  return `${apiUrl}${endpoint}`
+}

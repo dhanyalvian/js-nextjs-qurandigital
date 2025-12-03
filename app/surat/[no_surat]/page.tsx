@@ -8,14 +8,15 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import LoaderComp from '@/components/loader-comp';
-import { NumberStickerRounded } from '@/utils/comp';
+import { BadgeSurahAyah } from '@/utils/comp';
 import { Icon } from '@/components/icon';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Square } from 'lucide-react';
 import { Ayat, Surat, SuratDetail } from '@/types/quran';
-import { ApiUrl, QuranConfig } from '@/utils/config';
 import ErrorComp from '@/components/error-comp';
 import { useBookmarks } from '@/hooks/bookmark';
-import BackToSurahComp from '@/components/back-to-surah-comp';
+import { GetApiUrl } from '@/utils/api';
+import { Capitalize } from '@/utils/util';
+import { Button } from '@/components/ui/button';
 
 export default function SuratDetailPage() {
   const params = useParams();
@@ -23,14 +24,14 @@ export default function SuratDetailPage() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<number | null>(null);
   const { toggleBookmark, isBookmark } = useBookmarks();
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  
+
   const [isCopied, setIsCopied] = useState<boolean[]>([]);
   const copyToClipboard = (surat: Surat, ayat: Ayat) => {
-    const copyIndex = ayat.nomorAyat;
-    let copyText = `${surat.namaLatin} (${surat.nomor}:${ayat.nomorAyat}) | ${surat.nama}\n\n`;
-    copyText += `${ayat.teksArab}\n\n`;
-    copyText += `${ayat.teksIndonesia}`;
-  
+    const copyIndex = ayat.nomor;
+    let copyText = `${surat.nama_latin} (${surat.nomor}:${ayat.nomor}) | ${surat.nama}\n\n`;
+    copyText += `${ayat.ar}\n\n`;
+    copyText += `${ayat.idn}`;
+
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(copyText);
@@ -69,11 +70,13 @@ export default function SuratDetailPage() {
   };
 
   const { data, isLoading, isError } = useQuery<SuratDetail>({
-    queryKey: ['surat-detail', noSurat],
+    queryKey: ["surat-detail", noSurat],
     queryFn: async () => {
-      const response = await axios.get(`${ApiUrl}/surat/${noSurat}`);
-      return response.data.data;
+      const url = GetApiUrl(`/surah/${noSurat}`)
+      const response = await axios.get(url);
+      return response.data;
     },
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
@@ -134,52 +137,38 @@ export default function SuratDetailPage() {
   return (
     <>
       <div className="mb-4">
-        <BackToSurahComp />
-
         <div className="text-center bg-quran-nav rounded-2xl p-4 border border-quran-border-primary shadow-xs">
           <ul className="flex justify-center font-bold text-quran-title divider-x-dot">
-            <li className='text-3xl'>{data.namaLatin}</li>
+            <li className='text-3xl'>{data.nama_latin}</li>
             <li className="text-4xl font-arabic" dir="rtl">{data.nama}</li>
           </ul>
 
           <ul className="flex justify-center text-sm divider-x-dot text-quran-subtitle">
             <li>{data.arti}</li>
-            <li>{data.tempatTurun}</li>
-            <li>{data.jumlahAyat} ayat</li>
+            <li>{Capitalize(data.tempat_turun)}</li>
+            <li>{data.jumlah_ayat} ayat</li>
           </ul>
 
           <div className="mt-2">
-            <button className={`
-              group
-              bg-quran-border-primary
-              border
-              ${currentlyPlaying === numAudioFull
-                ? 'border-quran-border-secondary animate-pulse'
-                : 'border-quran-border-primary'}
-              text-sm
-              text-quran-subtitle
-              font-semibold
-              py-1
-              px-2
-              rounded-2xl
-              inline-flex
-              items-center
-              cursor-pointer`}
-              onClick={() => playAudio(data.audioFull[QuranConfig.defaultAudioKey], numAudioFull)}
-              title={currentlyPlaying === numAudioFull ? 'Berhenti' : 'Putar Surat'}
+            <Button
+              variant={currentlyPlaying === numAudioFull ? "secondary" : "outline"}
+              size="sm"
+              className="border border-border rounded-full shadow-xs cursor-pointer"
+              onClick={() => playAudio(data.audio, numAudioFull)}
+              title={currentlyPlaying === numAudioFull ? "Berhenti" : "Putar Surat"}
             >
               {currentlyPlaying === numAudioFull ? (
                 <>
-                  <Icon type='stop' size={16} isFill={true} isActive={true} />
-                  <span className='ml-2 mr-1'>Stop Surat</span>
+                  <Square className="icon-wrapper-fill-active" />
+                  Berhenti
                 </>
               ) : (
                 <>
-                  <Icon type='play' size={16} isFill={true} isActive={true} />
-                  <span className='ml-2 mr-1'>Putar Surat</span>
+                  <Play className="icon-wrapper-fill-active" />
+                  Putar Surat
                 </>
               )}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -187,12 +176,12 @@ export default function SuratDetailPage() {
       <div className="space-y-4">
         {data.ayat.map((ayat) => (
           <div
-            id={`${ayat.nomorAyat}`}
-            key={ayat.nomorAyat}
+            id={`${ayat.nomor}`}
+            key={ayat.nomor}
             className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs"
           >
             <div className="flex items-center justify-between mb-4">
-              <NumberStickerRounded number={data.nomor + ':' + ayat.nomorAyat} />
+              <BadgeSurahAyah surah={data.nomor} ayah={ayat.nomor} />
 
               <ul className='flex items-center gap-5'>
                 <li>
@@ -200,9 +189,9 @@ export default function SuratDetailPage() {
                     className='transition-colors cursor-pointer'
                     title='Copy text'
                     onClick={() => copyToClipboard(data, ayat)}
-                    disabled={isCopied[ayat.nomorAyat]}
+                    disabled={isCopied[ayat.nomor]}
                   >
-                    {isCopied[ayat.nomorAyat] ? (
+                    {isCopied[ayat.nomor] ? (
                       <Icon type='check' isActive={true} />
                     ) : (
                       <Icon type='copy' />
@@ -222,27 +211,27 @@ export default function SuratDetailPage() {
                 <li>
                   <button
                     className='transition-colors cursor-pointer'
-                    title={isBookmark(data.nomor, ayat.nomorAyat) ? "Hapus penanda" : "Tandai"}
+                    title={isBookmark(data.nomor, ayat.nomor) ? "Hapus penanda" : "Tandai"}
                     onClick={() => toggleBookmark({
                       noSurat: data.nomor,
                       namaSurat: data.nama,
-                      namaSuratLatin: data.namaLatin,
-                      noAyat: ayat.nomorAyat,
-                      teksArab: ayat.teksArab,
+                      namaSuratLatin: data.nama_latin,
+                      noAyat: ayat.nomor,
+                      teksArab: ayat.ar,
                     })}
                   >
-                    {isBookmark(data.nomor, ayat.nomorAyat) ? (
+                    {isBookmark(data.nomor, ayat.nomor) ? (
                       <Icon type='bookmark' isFill={true} isActive={true} />
                     ) : (
                       <Icon type='bookmark' />
                     )}
                   </button>
                 </li>
-                <li>
+                {/* <li>
                   <button
-                    onClick={() => playAudio(ayat.audio[QuranConfig.defaultAudioKey], ayat.nomorAyat)}
-                    className={`transition-colors cursor-pointer ${currentlyPlaying === ayat.nomorAyat ? 'animate-pulse' : ''}`}
-                    title={currentlyPlaying === ayat.nomorAyat ? 'Stop' : 'Putar ayat ' + ayat.nomorAyat}
+                    onClick={() => playAudio(ayat.audio[QuranConfig.defaultAudioKey], ayat.nomor)}
+                    className={`transition-colors cursor-pointer ${currentlyPlaying === ayat.nomor ? 'animate-pulse' : ''}`}
+                    title={currentlyPlaying === ayat.nomor ? 'Stop' : 'Putar ayat ' + ayat.nomor}
                   >
                     {currentlyPlaying === ayat.nomorAyat ? (
                       <Icon type='stop' isFill={true} isActive={true} />
@@ -250,38 +239,39 @@ export default function SuratDetailPage() {
                       <Icon type='play' isFill={true} />
                     )}
                   </button>
-                </li>
+                </li> */}
               </ul>
             </div>
 
             <div className="text-right mb-4">
               <p className="font-arabic text-3xl leading-loose text-quran-title" dir="rtl">
-                {ayat.teksArab}
+                {ayat.ar}
               </p>
             </div>
 
             <div className="mb-4">
-              <p className="text-md text-quran-subtitle italic leading-relaxed">
-                {ayat.teksLatin}
-              </p>
+              <p
+                className="text-md text-quran-subtitle italic leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: ayat.tr }}
+              />
             </div>
 
             <div className="">
               <p className="text-md text-quran-title leading-relaxed">
-                {ayat.teksIndonesia}
+                {ayat.idn}
               </p>
             </div>
           </div>
         ))}
 
         <div className="grid grid-cols-2 gap-4 mx-auto">
-          {data.suratSebelumnya && data.suratSebelumnya.nomor ? (
-            <Link href={`/surat/${data.suratSebelumnya.nomor}`} className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs">
+          {data.surat_sebelumnya && data.surat_sebelumnya.nomor ? (
+            <Link href={`/surat/${data.surat_sebelumnya.nomor}`} className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs">
               <div className='flex justify-start items-center'>
                 <ChevronLeft className='mr-3' size={24} />
                 <div>
-                  <div className='font-arabic text-2xl'>{data.suratSebelumnya.nama}</div>
-                  <div className='text-sm'>{data.suratSebelumnya.namaLatin}</div>
+                  <div className='font-arabic text-2xl'>{data.surat_sebelumnya.nama}</div>
+                  <div className='text-sm'>{data.surat_sebelumnya.nama_latin}</div>
                 </div>
               </div>
             </Link>
@@ -289,12 +279,12 @@ export default function SuratDetailPage() {
             <div></div>
           )}
 
-          {data.suratSelanjutnya && data.suratSelanjutnya.nomor ? (
-            <Link href={`/surat/${data.suratSelanjutnya.nomor}`} className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs text-right items-end">
+          {data.surat_selanjutnya && data.surat_selanjutnya.nomor ? (
+            <Link href={`/surat/${data.surat_selanjutnya.nomor}`} className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs text-right items-end">
               <div className='flex justify-end items-center'>
                 <div>
-                  <div className='font-arabic text-2xl'>{data.suratSelanjutnya.nama}</div>
-                  <div className='text-sm'>{data.suratSelanjutnya.namaLatin}</div>
+                  <div className='font-arabic text-2xl'>{data.surat_selanjutnya.nama}</div>
+                  <div className='text-sm'>{data.surat_selanjutnya.nama_latin}</div>
                 </div>
                 <ChevronRight className='ml-3' size={24} />
               </div>

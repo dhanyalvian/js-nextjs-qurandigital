@@ -2,10 +2,9 @@
 
 'use client';
 
-import BackToSurahComp from "@/components/back-to-surah-comp";
 import { useBookmarks } from "@/hooks/bookmark";
 import { Bookmark } from "@/types/quran";
-import { NumberStickerRounded } from "@/utils/comp";
+import { BadgeSurahAyah } from "@/utils/comp";
 import { Icon } from "@/components/icon";
 import Link from "next/link";
 import NoDataComp from "@/components/no-data-comp";
@@ -43,7 +42,8 @@ const BookmarkPage = () => {
       <>
         <div className="flex items-center justify-between mb-4">
           <Link href={`/surat/${row.noSurat}#${row.noAyat}`}>
-            <NumberStickerRounded number={`${row.noSurat}:${row.noAyat}`} />
+            {/* <NumberStickerRounded number={`${row.noSurat}:${row.noAyat}`} /> */}
+            <BadgeSurahAyah surah={row.noSurat} ayah={row.noAyat} />
           </Link>
 
           <ul className="flex items-center gap-5">
@@ -74,8 +74,6 @@ const BookmarkPage = () => {
   return (
     <>
       <div className="mb-4">
-        <BackToSurahComp />
-
         <div className="text-center bg-quran-nav rounded-2xl p-4 border border-quran-border-primary shadow-xs">
           <ul className="flex justify-center font-bold text-quran-title divider-x-dot">
             <li className='text-3xl'>Ayat yang ditandai</li>
