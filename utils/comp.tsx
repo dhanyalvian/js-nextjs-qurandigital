@@ -1,5 +1,7 @@
 //- utils/comp.tsx
 
+import { Badge } from "@/components/ui/badge";
+
 export const NumberStickerCircle = ({ number }: { number: string }) => {
   return (
     <div className="
@@ -28,3 +30,16 @@ export const NumberStickerRounded = ({ number }: { number: string }) => {
     </div>
   );
 };
+
+interface BadgeSurahAyahProps {
+  surah: number,
+  ayah: number,
+}
+
+export const BadgeSurahAyah = ({ surah, ayah }: BadgeSurahAyahProps) => {
+  return (
+    <Badge variant="outline" className="bg-neutral-100 text-sm font-mono font-semibold">
+      {surah}:{ayah}
+    </Badge>
+  )
+}

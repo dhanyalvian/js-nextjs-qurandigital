@@ -38,10 +38,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fontSans.variable} ${fontMono.variable} ${fontArabic.variable} antialiased`}>
+      <body className={`${fontSans.variable} ${fontMono.variable} ${fontArabic.variable} antialiased bg-quran-background`}>
         <Header />
 
-        <div className="layout-width mt-14 pt-4">
+        <div className="layout-width mt-14 pt-4.5">
           <Providers>
             <div className="">
               <main className="">

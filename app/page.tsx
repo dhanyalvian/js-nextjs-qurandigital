@@ -3,7 +3,7 @@
 'use client'
 
 import { Surat } from "@/types/quran"
-import { getApiUrl } from "@/utils/api"
+import { GetApiUrl } from "@/utils/api"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import Link from "next/link"
@@ -13,13 +13,13 @@ import { NumberStickerCircle } from "@/utils/comp"
 
 const HomePage = () => {
   const { data, isLoading, isError } = useQuery<Surat[]>({
-    queryKey: ['surat-list'],
+    queryKey: ["surat-list"],
     queryFn: async () => {
-      const url = getApiUrl('/surat')
+      const url = GetApiUrl("/surah")
       const response = await axios.get(url)
-
-      return response.data.data
+      return response.data
     },
+    refetchOnWindowFocus: false,
   })
 
   if (isLoading) {
@@ -39,11 +39,6 @@ const HomePage = () => {
 
   return (
     <>
-      {/* <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-2 text-quran-title">{QuranConfig.metadataTitle}</h1>
-        <p className="text-xl text-quran-subtitle">{QuranConfig.metadataDescription}</p>
-      </div> */}
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto">
         {data?.map((surat: Surat) => (
           <Link
@@ -56,9 +51,9 @@ const HomePage = () => {
                 <NumberStickerCircle number={surat.nomor.toString()} />
                 
                 <div className="items-start">
-                  <h2 className="font-semibold text-lg text-quran-title">{surat.namaLatin}</h2>
+                  <h2 className="font-semibold text-lg text-quran-title">{surat.nama_latin}</h2>
                   <p className="text-xs text-quran-subtitle font-medium">{surat.arti}</p>
-                  <p className="text-xs text-quran-info mt-0.5">{surat.jumlahAyat} ayat</p>
+                  <p className="text-xs text-quran-info mt-0.5">{surat.jumlah_ayat} ayat</p>
                 </div>
               </div>
               <div className="text-right">

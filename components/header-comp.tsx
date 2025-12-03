@@ -1,11 +1,19 @@
 //- components/header-comp.tsx
 
-import Link from "next/link";
-import { QuranConfig } from "@/utils/config";
-import { Icon } from "./icon";
-import { BookOpenText } from "lucide-react";
+"use client"
+
+import Link from "next/link"
+import { QuranConfig } from "@/utils/config"
+import { Bookmark, BookOpenText, ChevronLeft } from "lucide-react"
+import { ButtonGroup } from "./ui/button-group"
+import { Button } from "./ui/button"
+import { usePathname } from "next/navigation"
 
 const Header = () => {
+  const pathname = usePathname()
+  const homeActive = (pathname == "/")
+  const bookmarkActive = (pathname == "/bookmarks")
+
   return (
     <header className="overflow-y-scroll">
       <nav className="
@@ -16,26 +24,32 @@ const Header = () => {
       >
         <div className="layout-width py-3 flex items-center justify-between">
           <div className="flex flex-1">
-            <Link href="/" className="flex justify-start items-end gap-2">
+            <Link href="/" className="flex justify-start items-end gap-3">
               <BookOpenText size={26} />
-              <div className="text-2xl font-bold text-gray-900">{QuranConfig.metadataTitle}</div>
+              <div className="text-xl font-bold text-gray-900">{QuranConfig.metadataTitle}</div>
             </Link>
           </div>
 
-          <ul className="flex items-center space-x-4 gap-2">
-            <li>
-              <Icon type="search" size={24} />
-            </li>
-            <li>
-              <Link href="/bookmarks" className="text-quran-title align-right" title="Bookmark">
-                <Icon type="bookmark" size={24} />
+          <ButtonGroup>
+            {!homeActive && (
+              <Button variant="outline" size="sm" asChild className="rounded-full">
+                <Link href="/" title="Bookmark">
+                  <ChevronLeft />
+                  Back to Surat
+                </Link>
+              </Button>
+            )}
+            <Button variant="outline" size="sm" asChild className="rounded-full">
+              <Link href="/bookmarks" title="Bookmark">
+                <Bookmark className={`${bookmarkActive && "icon-wrapper-fill-active"}`}/>
+                Bookmark
               </Link>
-            </li>
-          </ul>
+            </Button>
+          </ButtonGroup>
         </div>
       </nav>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
