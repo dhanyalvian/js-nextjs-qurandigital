@@ -1,22 +1,22 @@
 //- app/surat/[no_surat]/page.tsx
 
-'use client';
+"use client";
 
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { useState, useRef, useEffect } from 'react';
-import LoaderComp from '@/components/loader-comp';
-import { BadgeSurahAyah } from '@/utils/comp';
-import { Icon } from '@/components/icon';
-import { ChevronLeft, ChevronRight, Play, Square } from 'lucide-react';
-import { Ayat, Surat, SuratDetail } from '@/types/quran';
-import ErrorComp from '@/components/error-comp';
-import { useBookmarks } from '@/hooks/bookmark';
-import { GetApiUrl } from '@/utils/api';
-import { Capitalize } from '@/utils/util';
-import { Button } from '@/components/ui/button';
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useParams } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
+import LoaderComp from "@/components/loader-comp";
+import { BadgeSurahAyah } from "@/utils/comp";
+import { Icon } from "@/components/icon";
+import { Play, Square } from "lucide-react";
+import { Ayat, Surat, SuratDetail } from "@/types/quran";
+import ErrorComp from "@/components/error-comp";
+import { useBookmarks } from "@/hooks/bookmark";
+import { GetApiUrl } from "@/utils/api";
+import { Capitalize } from "@/utils/util";
+import { Button } from "@/components/ui/button";
+import OtherSurah from "@/components/other-surah";
 
 export default function SuratDetailPage() {
   const params = useParams();
@@ -36,15 +36,15 @@ export default function SuratDetailPage() {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(copyText);
       } else {
-        const tempTextArea = document.createElement('textarea');
+        const tempTextArea = document.createElement("textarea");
         tempTextArea.value = copyText;
-        tempTextArea.style.position = 'fixed';
-        tempTextArea.style.left = '-9999px';
-        tempTextArea.style.top = '0';
+        tempTextArea.style.position = "fixed";
+        tempTextArea.style.left = "-9999px";
+        tempTextArea.style.top = "0";
         document.body.appendChild(tempTextArea);
         tempTextArea.focus();
         tempTextArea.select();
-        document.execCommand('copy');
+        document.execCommand("copy");
         document.body.removeChild(tempTextArea);
       }
 
@@ -60,7 +60,7 @@ export default function SuratDetailPage() {
         return newIsCopied;
       }), 2000);
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      console.error("Failed to copy text: ", err);
       setIsCopied(prevIsCopied => {
         const newIsCopied = [...prevIsCopied];
         newIsCopied[copyIndex] = false;
@@ -109,7 +109,7 @@ export default function SuratDetailPage() {
     setCurrentlyPlaying(noAyat);
 
     audio.play().catch((error) => {
-      console.error('Error playing audio:', error);
+      console.error("Error playing audio:", error);
       setCurrentlyPlaying(null);
     });
 
@@ -135,12 +135,12 @@ export default function SuratDetailPage() {
   const numAudioFull = 999;
 
   return (
-    <>
-      <div className="mb-4">
-        <div className="text-center bg-quran-nav rounded-2xl p-4 border border-quran-border-primary shadow-xs">
+    <div className="grid grid-cols-1 gap-4 mx-auto">
+      <div className="">
+        <div className="text-center bg-olive-50 rounded-2xl p-4 border border-gray-300 shadow-xs">
           <ul className="flex justify-center font-bold text-quran-title divider-x-dot">
-            <li className='text-3xl'>{data.nama_latin}</li>
-            <li className="text-4xl font-arabic" dir="rtl">{data.nama}</li>
+            <li className="text-2xl">{data.nama_latin}</li>
+            <li className="text-3xl font-arabic" dir="rtl">{data.nama}</li>
           </ul>
 
           <ul className="flex justify-center text-sm divider-x-dot text-quran-subtitle">
@@ -173,6 +173,20 @@ export default function SuratDetailPage() {
         </div>
       </div>
 
+      <OtherSurah
+        surat_sebelumnya={data.surat_sebelumnya}
+        surat_selanjutnya={data.surat_selanjutnya}
+        ayat={[]}
+        nomor={0}
+        nama={""}
+        nama_latin={""}
+        jumlah_ayat={0}
+        tempat_turun={""}
+        arti={""}
+        deskripsi={""}
+        audio={""}
+      />
+
       <div className="space-y-4">
         {data.ayat.map((ayat) => (
           <div
@@ -183,34 +197,34 @@ export default function SuratDetailPage() {
             <div className="flex items-center justify-between mb-4">
               <BadgeSurahAyah surah={data.nomor} ayah={ayat.nomor} />
 
-              <ul className='flex items-center gap-5'>
+              <ul className="flex items-center gap-5">
                 <li>
                   <button
-                    className='transition-colors cursor-pointer'
-                    title='Copy text'
+                    className="transition-colors cursor-pointer"
+                    title="Copy text"
                     onClick={() => copyToClipboard(data, ayat)}
                     disabled={isCopied[ayat.nomor]}
                   >
                     {isCopied[ayat.nomor] ? (
-                      <Icon type='check' isActive={true} />
+                      <Icon type="check" isActive={true} />
                     ) : (
-                      <Icon type='copy' />
+                      <Icon type="copy" />
                     )}
                   </button>
                 </li>
                 <li>
-                  <button className='transition-colors cursor-pointer' title='Share'>
-                    <Icon type='share' />
+                  <button className="transition-colors cursor-pointer" title="Share">
+                    <Icon type="share" />
                   </button>
                 </li>
                 <li>
-                  <button className='transition-colors cursor-pointer' title='Tafsir'>
-                    <Icon type='tafsir' />
+                  <button className="transition-colors cursor-pointer" title="Tafsir">
+                    <Icon type="tafsir" />
                   </button>
                 </li>
                 <li>
                   <button
-                    className='transition-colors cursor-pointer'
+                    className="transition-colors cursor-pointer"
                     title={isBookmark(data.nomor, ayat.nomor) ? "Hapus penanda" : "Tandai"}
                     onClick={() => toggleBookmark({
                       noSurat: data.nomor,
@@ -221,25 +235,12 @@ export default function SuratDetailPage() {
                     })}
                   >
                     {isBookmark(data.nomor, ayat.nomor) ? (
-                      <Icon type='bookmark' isFill={true} isActive={true} />
+                      <Icon type="bookmark" isFill={true} isActive={true} />
                     ) : (
-                      <Icon type='bookmark' />
+                      <Icon type="bookmark" />
                     )}
                   </button>
                 </li>
-                {/* <li>
-                  <button
-                    onClick={() => playAudio(ayat.audio[QuranConfig.defaultAudioKey], ayat.nomor)}
-                    className={`transition-colors cursor-pointer ${currentlyPlaying === ayat.nomor ? 'animate-pulse' : ''}`}
-                    title={currentlyPlaying === ayat.nomor ? 'Stop' : 'Putar ayat ' + ayat.nomor}
-                  >
-                    {currentlyPlaying === ayat.nomorAyat ? (
-                      <Icon type='stop' isFill={true} isActive={true} />
-                    ) : (
-                      <Icon type='play' isFill={true} />
-                    )}
-                  </button>
-                </li> */}
               </ul>
             </div>
 
@@ -263,38 +264,21 @@ export default function SuratDetailPage() {
             </div>
           </div>
         ))}
-
-        <div className="grid grid-cols-2 gap-4 mx-auto">
-          {data.surat_sebelumnya && data.surat_sebelumnya.nomor ? (
-            <Link href={`/surat/${data.surat_sebelumnya.nomor}`} className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs">
-              <div className='flex justify-start items-center'>
-                <ChevronLeft className='mr-3' size={24} />
-                <div>
-                  <div className='font-arabic text-2xl'>{data.surat_sebelumnya.nama}</div>
-                  <div className='text-sm'>{data.surat_sebelumnya.nama_latin}</div>
-                </div>
-              </div>
-            </Link>
-          ) : (
-            <div></div>
-          )}
-
-          {data.surat_selanjutnya && data.surat_selanjutnya.nomor ? (
-            <Link href={`/surat/${data.surat_selanjutnya.nomor}`} className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs text-right items-end">
-              <div className='flex justify-end items-center'>
-                <div>
-                  <div className='font-arabic text-2xl'>{data.surat_selanjutnya.nama}</div>
-                  <div className='text-sm'>{data.surat_selanjutnya.nama_latin}</div>
-                </div>
-                <ChevronRight className='ml-3' size={24} />
-              </div>
-
-            </Link>
-          ) : (
-            <div></div>
-          )}
-        </div>
       </div>
-    </>
+
+      <OtherSurah
+        surat_sebelumnya={data.surat_sebelumnya}
+        surat_selanjutnya={data.surat_selanjutnya}
+        ayat={[]}
+        nomor={0}
+        nama={""}
+        nama_latin={""}
+        jumlah_ayat={0}
+        tempat_turun={""}
+        arti={""}
+        deskripsi={""}
+        audio={""}
+      />
+    </div>
   );
 }
