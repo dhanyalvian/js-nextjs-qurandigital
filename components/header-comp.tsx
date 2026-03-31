@@ -4,12 +4,12 @@
 
 import Link from "next/link"
 import { QuranConfig } from "@/utils/config"
-import { Bookmark, BookOpenText, ChevronLeft, Search } from "lucide-react"
+import { Bookmark, BookOpenText, ChevronLeft } from "lucide-react"
 import { ButtonGroup } from "./ui/button-group"
 import { Button } from "./ui/button"
 import { usePathname } from "next/navigation"
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip"
-import { Kbd, KbdGroup } from "./ui/kbd"
+import DropdownSurah from "./dropdown-surah"
 
 const Header = () => {
   const pathname = usePathname()
@@ -22,14 +22,17 @@ const Header = () => {
         fixed top-0 left-0
         z-50
         w-full shadow-xs
-        bg-quran-nav border-b border-b-quran-border-primary"
+        bg-quran-nav border-b border-b-quran-border-primary
+        scroll-smooth scroll-pt-0"
       >
-        <div className="layout-width py-3 flex items-center justify-between">
-          <div className="flex flex-1">
+        <div className="layout-width py-3.5 flex items-center justify-between">
+          <div className="flex flex-1 gap-4">
             <Link href="/" className="flex justify-start items-end gap-2">
               <BookOpenText size={26} />
               <div className="text-xl font-bold text-gray-900">{QuranConfig.metadataTitle}</div>
             </Link>
+            
+            <DropdownSurah />
           </div>
 
           <ButtonGroup>
@@ -48,24 +51,6 @@ const Header = () => {
                 </TooltipContent>
               </Tooltip>
             )}
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="outline" size="sm" className="rounded-xl cursor-pointer">
-                  <Search />
-                  <span className="hidden md:block lg:block">Search</span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="flex items-center gap-2">
-                  Search
-                  <KbdGroup>
-                    <Kbd>⌘</Kbd>
-                    <Kbd>K</Kbd>
-                  </KbdGroup>
-                </div>
-              </TooltipContent>
-            </Tooltip>
 
             <Tooltip>
               <TooltipTrigger asChild>
