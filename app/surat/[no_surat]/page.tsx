@@ -27,10 +27,10 @@ export default function SuratDetailPage() {
 
   const [isCopied, setIsCopied] = useState<boolean[]>([]);
   const copyToClipboard = (surat: Surat, ayat: Ayat) => {
-    const copyIndex = ayat.nomor;
-    let copyText = `${surat.nama_latin} (${surat.nomor}:${ayat.nomor}) | ${surat.nama}\n\n`;
-    copyText += `${ayat.ar}\n\n`;
-    copyText += `${ayat.idn}`;
+    const copyIndex = ayat.nomorAyat;
+    let copyText = `${surat.namaLatin} (${surat.nomor}:${ayat.nomorAyat}) | ${surat.nama}\n\n`;
+    copyText += `${ayat.teksArab}\n\n`;
+    copyText += `${ayat.teksIndonesia}`;
 
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -72,9 +72,9 @@ export default function SuratDetailPage() {
   const { data, isLoading, isError } = useQuery<SuratDetail>({
     queryKey: ["surat-detail", noSurat],
     queryFn: async () => {
-      const url = GetApiUrl(`/surah/${noSurat}`)
+      const url = GetApiUrl(`/surat/${noSurat}`)
       const response = await axios.get(url);
-      return response.data;
+      return response.data.data;
     },
     refetchOnWindowFocus: false,
   });
@@ -139,14 +139,14 @@ export default function SuratDetailPage() {
       <div className="">
         <div className="text-center bg-olive-50 rounded-2xl p-4 border border-gray-300 shadow-xs">
           <ul className="flex justify-center font-bold text-quran-title divider-x-dot">
-            <li className="text-2xl">{data.nama_latin}</li>
+            <li className="text-2xl">{data.namaLatin}</li>
             <li className="text-3xl font-arabic" dir="rtl">{data.nama}</li>
           </ul>
 
           <ul className="flex justify-center text-sm divider-x-dot text-quran-subtitle">
             <li>{data.arti}</li>
-            <li>{Capitalize(data.tempat_turun)}</li>
-            <li>{data.jumlah_ayat} ayat</li>
+            <li>{Capitalize(data.tempatTurun ?? "")}</li>
+            <li>{data.jumlahAyat} ayat</li>
           </ul>
 
           <div className="mt-2">
@@ -154,7 +154,7 @@ export default function SuratDetailPage() {
               variant={currentlyPlaying === numAudioFull ? "secondary" : "outline"}
               size="sm"
               className="border border-border rounded-full shadow-xs cursor-pointer"
-              onClick={() => playAudio(data.audio, numAudioFull)}
+              onClick={() => playAudio(data.audioFull?.["05"] || "", numAudioFull)}
               title={currentlyPlaying === numAudioFull ? "Berhenti" : "Putar Surat"}
             >
               {currentlyPlaying === numAudioFull ? (
@@ -174,28 +174,27 @@ export default function SuratDetailPage() {
       </div>
 
       <OtherSurah
-        surat_sebelumnya={data.surat_sebelumnya}
-        surat_selanjutnya={data.surat_selanjutnya}
+        suratSebelumnya={data.suratSebelumnya}
+        suratSelanjutnya={data.suratSelanjutnya}
         ayat={[]}
         nomor={0}
         nama={""}
-        nama_latin={""}
-        jumlah_ayat={0}
-        tempat_turun={""}
+        namaLatin={""}
+        jumlahAyat={0}
+        tempatTurun={""}
         arti={""}
         deskripsi={""}
-        audio={""}
       />
 
       <div className="space-y-4">
         {data.ayat.map((ayat) => (
           <div
-            id={`${ayat.nomor}`}
-            key={ayat.nomor}
+            id={`${ayat.nomorAyat}`}
+            key={ayat.nomorAyat}
             className="group p-4 rounded-2xl bg-quran-panel hover:scale-[1.02] transition-all duration-200 border border-quran-border-primary shadow-xs"
           >
             <div className="flex items-center justify-between mb-4">
-              <BadgeSurahAyah surah={data.nomor} ayah={ayat.nomor} />
+              <BadgeSurahAyah surah={data.nomor} ayah={ayat.nomorAyat} />
 
               <ul className="flex items-center gap-5">
                 <li>
@@ -203,9 +202,9 @@ export default function SuratDetailPage() {
                     className="transition-colors cursor-pointer"
                     title="Copy text"
                     onClick={() => copyToClipboard(data, ayat)}
-                    disabled={isCopied[ayat.nomor]}
+                    disabled={isCopied[ayat.nomorAyat]}
                   >
-                    {isCopied[ayat.nomor] ? (
+                    {isCopied[ayat.nomorAyat] ? (
                       <Icon type="check" isActive={true} />
                     ) : (
                       <Icon type="copy" />
@@ -225,16 +224,16 @@ export default function SuratDetailPage() {
                 <li>
                   <button
                     className="transition-colors cursor-pointer"
-                    title={isBookmark(data.nomor, ayat.nomor) ? "Hapus penanda" : "Tandai"}
+                    title={isBookmark(data.nomor, ayat.nomorAyat) ? "Hapus penanda" : "Tandai"}
                     onClick={() => toggleBookmark({
                       noSurat: data.nomor,
                       namaSurat: data.nama,
-                      namaSuratLatin: data.nama_latin,
-                      noAyat: ayat.nomor,
-                      teksArab: ayat.ar,
+                      namaSuratLatin: data.namaLatin,
+                      noAyat: ayat.nomorAyat,
+                      teksArab: ayat.teksArab,
                     })}
                   >
-                    {isBookmark(data.nomor, ayat.nomor) ? (
+                    {isBookmark(data.nomor, ayat.nomorAyat) ? (
                       <Icon type="bookmark" isFill={true} isActive={true} />
                     ) : (
                       <Icon type="bookmark" />
@@ -246,20 +245,20 @@ export default function SuratDetailPage() {
 
             <div className="text-right mb-4">
               <p className="font-arabic text-3xl leading-loose text-quran-title" dir="rtl">
-                {ayat.ar}
+                {ayat.teksArab}
               </p>
             </div>
 
             <div className="mb-4">
               <p
                 className="text-md text-quran-subtitle italic leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: ayat.tr }}
+                dangerouslySetInnerHTML={{ __html: ayat.teksLatin }}
               />
             </div>
 
             <div className="">
               <p className="text-md text-quran-title leading-relaxed">
-                {ayat.idn}
+                {ayat.teksIndonesia}
               </p>
             </div>
           </div>
@@ -267,17 +266,16 @@ export default function SuratDetailPage() {
       </div>
 
       <OtherSurah
-        surat_sebelumnya={data.surat_sebelumnya}
-        surat_selanjutnya={data.surat_selanjutnya}
+        suratSebelumnya={data.suratSebelumnya}
+        suratSelanjutnya={data.suratSelanjutnya}
         ayat={[]}
         nomor={0}
         nama={""}
-        nama_latin={""}
-        jumlah_ayat={0}
-        tempat_turun={""}
+        namaLatin={""}
+        jumlahAyat={0}
+        tempatTurun={""}
         arti={""}
         deskripsi={""}
-        audio={""}
       />
     </div>
   );

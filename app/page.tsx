@@ -15,9 +15,9 @@ const HomePage = () => {
   const { data, isLoading, isError } = useQuery<Surat[]>({
     queryKey: ["surat-list"],
     queryFn: async () => {
-      const url = GetApiUrl("/surah")
+      const url = GetApiUrl("/surat")
       const response = await axios.get(url)
-      return response.data
+      return response.data.data
     },
     refetchOnWindowFocus: false,
   })
@@ -49,11 +49,11 @@ const HomePage = () => {
             <div className="flex justify-between items-start">
               <div className="flex items-start gap-4">
                 <NumberStickerCircle number={surat.nomor.toString()} />
-                
+
                 <div className="items-start">
-                  <h2 className="font-semibold text-lg text-quran-title">{surat.nama_latin}</h2>
+                  <h2 className="font-semibold text-lg text-quran-title">{surat.namaLatin}</h2>
                   <p className="text-xs text-quran-subtitle font-medium">{surat.arti}</p>
-                  <p className="text-xs text-quran-info mt-0.5">{surat.jumlah_ayat} ayat</p>
+                  <p className="text-xs text-quran-info mt-0.5">{surat.jumlahAyat} ayat</p>
                 </div>
               </div>
               <div className="text-right">

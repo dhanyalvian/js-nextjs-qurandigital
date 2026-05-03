@@ -1,30 +1,36 @@
 //- types/quran.ts
 
 interface Surat {
-  id?: number,
   nomor: number,
   nama: string,
-  nama_latin: string,
-  jumlah_ayat: number,
-  tempat_turun: string,
-  arti: string,
-  deskripsi: string,
-  audio: string,
+  namaLatin: string,
+  jumlahAyat: number,
+  tempatTurun?: string,
+  arti?: string,
+  deskripsi?: string,
+  audioFull?: Audio,
 }
 
 interface SuratDetail extends Surat {
   ayat: Ayat[],
-  surat_sebelumnya: Surat,
-  surat_selanjutnya: Surat,
+  suratSebelumnya: Surat,
+  suratSelanjutnya: Surat,
 }
 
 interface Ayat {
-  id: number,
-  surah: number,
-  nomor: number,
-  ar: string,
-  tr: string,
-  idn: string,
+  nomorAyat: number,
+  teksArab: string,
+  teksLatin: string,
+  teksIndonesia: string,
+  audio: Audio,
+}
+
+interface Audio {
+  "01": string,
+  "02": string,
+  "03": string,
+  "04": string,
+  "05": string,
 }
 
 interface Bookmark {
